@@ -1,23 +1,21 @@
-Then paste the following:
+# Web framework
+flask>=3.0.0
+flask-cors>=4.0.0
 
-txt
-fastapi==0.115.0
-uvicorn==0.30.1
-pydantic==2.8.2
-python-dotenv==1.0.1
+# WSGI server (required by Render)
+gunicorn>=21.2.0
 
-# Testing
-pytest==8.2.0
-pytest-asyncio==0.23.5
+# Stripe billing (routes_subscription.py)
+stripe>=7.0.0
 
-# Optional utilities (safe defaults)
-requests==2.32.3
-🎯 Why these packages?
-FastAPI
-Your backend API routes (routes_install.py, routes_commands.py, etc.) rely on FastAPI.
+# Environment variables (config.py)
+python-dotenv>=1.0.0
 
-Uvicorn
-Your Render deployment uses:
+# HTTP requests (reliability_shield.py)
+requests>=2.31.0
 
-Code
-uvicorn backend.app:app --host 0.0.0.0 --port 10000
+# Auth tokens
+pyjwt>=2.8.0
+
+# Testing (test_*.py)
+pytest>=8.0.0
