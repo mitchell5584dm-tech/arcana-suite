@@ -1,21 +1,47 @@
-# Web framework
-flask>=3.0.0
-flask-cors>=4.0.0
+# ── Web Framework (FastAPI + Starlette) ───────────────────
+fastapi>=0.111.0
+starlette>=0.37.0
 
-# WSGI server (required by Render)
+# ── ASGI Server (required by Render for FastAPI) ──────────
+uvicorn[standard]>=0.29.0
 gunicorn>=21.2.0
 
-# Stripe billing (routes_subscription.py)
+# ── Stripe (routes_subscription.py) ───────────────────────
 stripe>=7.0.0
 
-# Environment variables (config.py)
+# ── Data validation (FastAPI dependency) ──────────────────
+pydantic>=2.7.0
+pydantic-core>=2.18.0
+annotated-types>=0.6.0
+
+# ── Templating (Jinja2Templates used in starlette) ────────
+jinja2>=3.1.0
+markupsafe>=2.1.0
+
+# ── HTTP clients ──────────────────────────────────────────
+requests>=2.31.0
+httpx>=0.27.0
+httptools>=0.6.0
+
+# ── Async I/O (anyio + WebSockets) ────────────────────────
+anyio>=4.3.0
+websockets>=12.0
+sniffio>=1.3.0
+wsproto>=1.2.0
+
+# ── Auth & Security ───────────────────────────────────────
+pyjwt>=2.8.0
+cryptography>=42.0.0
+itsdangerous>=2.1.0
+python-multipart>=0.0.9
+
+# ── Environment variables ─────────────────────────────────
 python-dotenv>=1.0.0
 
-# HTTP requests (reliability_shield.py)
-requests>=2.31.0
-
-# Auth tokens
-pyjwt>=2.8.0
-
-# Testing (test_*.py)
+# ── Testing ───────────────────────────────────────────────
 pytest>=8.0.0
+httpx>=0.27.0
+
+# ── Utilities ─────────────────────────────────────────────
+certifi>=2024.0.0
+typing-extensions>=4.11.0
