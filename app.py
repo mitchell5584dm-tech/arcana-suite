@@ -1,8 +1,11 @@
 # backend/app.py
 
-from engine.pain_point_resolver import PainPointResolver
-from engine.reliability_shield import ReliabilityShield
-from engine.qol_layer import QOLLayer
+from pain_point_resolver import PainPointResolver
+from triage import Triage
+from opsec import OpsecValidator
+from auditors import Auditors
+from override_panel import OverridePanel
+
 
 resolver = PainPointResolver()
 shield = ReliabilityShield()
