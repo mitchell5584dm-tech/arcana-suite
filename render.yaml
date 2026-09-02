@@ -1,9 +1,16 @@
-from fastapi import APIRouter
-from backend.app import run_command
-
-router = APIRouter()
-
-@router.post("/command")
-def validate_command(payload: dict):
-    return run_command(payload.get("cmd", ""))
-
+services:
+  - type: web
+    name: arcana-evidryx
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn evidryx.api:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    disk:
+      name: evidryx-data
+      mountPath: /var/data
+      sizeGB: 10
+    envVars:
+      - key: EVIDRYX_DATA_DIR
+        value: /var/data
+      - key: EVIDRYX_EVIDENCE_ROOTS
+        value: /var/data/evidence

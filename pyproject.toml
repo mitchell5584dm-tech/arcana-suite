@@ -1,0 +1,4 @@
+[tool.pytest.ini_options]
+addopts = "--import-mode=importlib"
+testpaths = ["tests", ".", "arcana-suite/backend/tests"]
+norecursedirs = [".git", ".venv", "data"]
