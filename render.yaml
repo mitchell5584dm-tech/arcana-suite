@@ -14,3 +14,7 @@ services:
         value: /var/data
       - key: EVIDRYX_EVIDENCE_ROOTS
         value: /var/data/evidence
+      - key: EVIDRYX_API_KEY
+        sync: false
+      - key: EVIDRYX_MAX_REQUEST_BYTES
+        value: 1048576

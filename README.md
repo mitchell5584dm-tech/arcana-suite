@@ -22,7 +22,7 @@ read-only source hashing, local case and evidence metadata, integrity
 verification, allowed-root enforcement, and a hash-chained audit trail without
 removing or renaming existing ARCANA capabilities. See
 [`docs/EVIDRYX_FOUNDATION.md`](docs/EVIDRYX_FOUNDATION.md) for its threat model,
-deployment configuration, API workflow, audit findings, and roadmap.
+authenticated deployment configuration, API workflow, audit findings, and roadmap.
 
 [Overview](#overview) · [Modules](#module-map) · [Features](#features) · [Architecture](#architecture) · [Installation](#installation) · [Deployment](#render-deployment) · [Stripe](#stripe-integration) · [Screenshots](#screenshots) · [License](#license)
 

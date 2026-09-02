@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import hashlib
 import json
-import os
 import re
 import sqlite3
 import uuid
@@ -31,13 +30,16 @@ class EvidenceService:
         self._initialize()
 
     def _connect(self) -> sqlite3.Connection:
-        connection = sqlite3.connect(self.database)
+        connection = sqlite3.connect(self.database, timeout=10.0)
         connection.row_factory = sqlite3.Row
         connection.execute("PRAGMA foreign_keys = ON")
+        connection.execute("PRAGMA busy_timeout = 10000")
         return connection
 
     def _initialize(self) -> None:
         with self._connect() as db:
+            db.execute("PRAGMA journal_mode = WAL")
+            db.execute("PRAGMA synchronous = FULL")
             db.executescript("""
                 CREATE TABLE IF NOT EXISTS cases (
                     case_id TEXT PRIMARY KEY, name TEXT NOT NULL,
@@ -100,6 +102,7 @@ class EvidenceService:
             raise ValueError("case name is required")
         created_at = utc_now()
         with self._connect() as db:
+            db.execute("BEGIN IMMEDIATE")
             db.execute("INSERT INTO cases VALUES (?, ?, ?, ?)", (case_id, name.strip(), description, created_at))
             self._audit(db, "case.created", case_id, {"name": name.strip()})
         return {"case_id": case_id, "name": name.strip(), "description": description, "created_at": created_at}
@@ -122,6 +125,7 @@ class EvidenceService:
             acquisition_method=acquisition_method.strip(), examiner=examiner.strip(),
         )
         with self._connect() as db:
+            db.execute("BEGIN IMMEDIATE")
             if not db.execute("SELECT 1 FROM cases WHERE case_id = ?", (case_id,)).fetchone():
                 raise LookupError(f"case not found: {case_id}")
             db.execute(
@@ -140,6 +144,7 @@ class EvidenceService:
             path = self._safe_source(row["source_path"])
             actual = self.hash_file(path)
             verified = actual == row["sha256"] and path.stat().st_size == row["size_bytes"]
+            db.execute("BEGIN IMMEDIATE")
             self._audit(db, "evidence.verified", evidence_id, {"verified": verified, "actual_sha256": actual})
         return {"evidence_id": evidence_id, "verified": verified, "expected_sha256": row["sha256"], "actual_sha256": actual}
 
