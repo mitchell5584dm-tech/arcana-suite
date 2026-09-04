@@ -1,32 +1,26 @@
-# backend/app.py
-import importlib.util
-import os
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
 
-from pain_point_resolver import PainPointResolver
-from reliability_shield import ReliabilityShield
+app = FastAPI(title="ARCANA Suite Demo")
 
-# 'qol layer.py' has a space in the filename  Python can't import it directly
-# Using importlib to load it safely
-_spec = importlib.util.spec_from_file_location(
-        "qol_layer",
-        os.path.join(os.path.dirname(os.path.abspath(__file__)), "qol layer.py")
-)
-_mod = importlib.util.module_from_spec(_spec)
-_spec.loader.exec_module(_mod)
-QOLLayer = _mod.QOLLayer
+class TokenState(BaseModel):
+    user_id: str
+    tokens: int
+    tower_height: int
 
-resolver = PainPointResolver()
-shield = ReliabilityShield()
-qol = QOLLayer()
+FAKE_DB = {}
 
-def run_command(cmd):
-        return shield.safe_execute(resolver.validate_command, cmd)
+@app.get("/health")
+def health():
+    return {"status": "ok"}
 
-def install(config):
-        return shield.safe_execute(resolver.safe_install, config)
+@app.post("/token-state")
+def update_token_state(state: TokenState):
+    FAKE_DB[state.user_id] = state
+    return {"ok": True, "state": state}
 
-def subscription(plan):
-        return shield.safe_execute(resolver.subscription_clarity, plan)
-
-def backup(data):
-        return shield.safe_execute(qol.save_backup, data)
+@app.get("/token-state/{user_id}")
+def get_token_state(user_id: str):
+    if user_id not in FAKE_DB:
+        raise HTTPException(status_code=404, detail="Not found")
+    return FAKE_DB[user_id]
