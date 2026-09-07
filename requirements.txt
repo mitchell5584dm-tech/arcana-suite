@@ -7,3 +7,5 @@ pytest-asyncio==0.23.5
 requests==2.32.3
 httpx
 aiofiles
+uvloop
+httptools
