@@ -1,4 +1,4 @@
-# ARCANA Forensics
+# Arcana-Forensics
 
 Offline-first digital forensics triage and incident response suite.
 
